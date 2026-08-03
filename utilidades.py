@@ -1,7 +1,15 @@
-#Modulo: utilidades.py
+# Modulo: utilidades.py
 
 import config
 
-horas = config.intervalo // 3600
-minutos = config.intervalo // 60
-segundos = config.intervalo % 60
+
+restante = config.intervalo
+
+def obtener_transcurrido():
+  return config.intervalo - restante
+
+def convertir_tiempo(segundos_totales):
+  horas = segundos_totales // 3600
+  minutos = (segundos_totales % 3600) // 60
+  segundos = segundos_totales % 60
+  return horas, minutos, segundos

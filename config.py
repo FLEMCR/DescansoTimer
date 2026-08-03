@@ -1,3 +1,3 @@
-#Modulo: config.py
+# Modulo: config.py
 
-intervalo = 10 #En segundos
+intervalo = 10  # En segundos (después será 3600)

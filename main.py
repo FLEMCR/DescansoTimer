@@ -1,24 +1,29 @@
-#Modulo: main.py
+# Modulo: main.py
 
-import time
-import config
-import utilidades
+import time, sys
+import config, utilidades, ventana
 
-from PySide6.QtWidgets import QApplication, QWidget
+from PySide6.QtCore import QTimer
+from PySide6.QtWidgets import QApplication
 
-def mostrar_alarma():
-  print(f'Hora de Descanso {time.strftime("%H:%M:%S")}'.upper())
 
-def contador():
-  for restante in range(config.intervalo, 0, -1):
-    print(f'Tiempo restante: {utilidades.minutos:02}:{utilidades.segundos:02}') #Le coloco :02 para que me muestre dos digitos y que si en caso flatan digitos me los agregue con un 0 adelante.
-    time.sleep(1)
+timer = QTimer()
+
+
+def actualizar_contador():
+  horas, minutos, segundos = utilidades.convertir_tiempo(utilidades.restante)
+  print(f"Tiempo restante: {horas:02}:{minutos:02}:{segundos:02}")
+  utilidades.restante -= 1
+  if utilidades.restante <= 0:
+    ventana.mostrar_ventana("Hora de descansar.")
+    utilidades.restante = config.intervalo
+
 
 def iniciar():
-  print("Iniciando...")
-  while True:
-    contador()
-    mostrar_alarma()
+  app = QApplication(sys.argv)
+  timer.timeout.connect(actualizar_contador)
+  timer.start(1000)
+  app.exec()
 
-# Programa Principal
+
 iniciar()
