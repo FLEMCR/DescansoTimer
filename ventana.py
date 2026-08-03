@@ -1,19 +1,31 @@
-# Modulo: ventana.py
+#Modulo: ventana.py
 
-from PySide6.QtWidgets import (QApplication, QWidget, QLabel, QPushButton)
-from PySide6.QtCore import QTimer
+from PySide6.QtWidgets import QWidget, QLabel, QPushButton
+from PySide6.QtCore import Signal
 
-def mostrar_ventana(mensaje):
 
-  ventana = QWidget()
-  ventana.setWindowTitle("Alarma de Descanso")
+class VentanaAlarma(QWidget):
+    continuar = Signal()
 
-  descripcion = QLabel(mensaje, ventana)
-  descripcion.move(90, 80)
+    def __init__(self):
+        super().__init__()
 
-  boton = QPushButton("Continuar", ventana)
-  boton.move(200, 200)
-  boton.clicked.connect(ventana.close)
+        self.setWindowTitle("Alarma de Descanso")
 
-  ventana.resize(500, 300)
-  ventana.show()
+        self.descripcion = QLabel("", self)
+        self.descripcion.move(90, 80)
+
+        self.boton = QPushButton("Continuar", self)
+        self.boton.move(200, 200)
+
+        self.boton.clicked.connect(self.ocultar)
+
+        self.resize(500, 300)
+
+    def mostrar(self, mensaje):
+        self.descripcion.setText(mensaje)
+        self.show()
+
+    def ocultar(self):
+        self.hide()
+        self.continuar.emit()

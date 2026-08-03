@@ -2,14 +2,12 @@
 
 import config
 
-
 restante = config.intervalo
 
-def obtener_transcurrido():
-  return config.intervalo - restante
 
 def convertir_tiempo(segundos_totales):
-  horas = segundos_totales // 3600
-  minutos = (segundos_totales % 3600) // 60
-  segundos = segundos_totales % 60
-  return horas, minutos, segundos
+    horas = segundos_totales // 3600
+    minutos = (segundos_totales % 3600) // 60
+    segundos = segundos_totales % 60
+
+    return horas, minutos, segundos

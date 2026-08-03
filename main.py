@@ -1,29 +1,39 @@
 # Modulo: main.py
 
-import time, sys
-import config, utilidades, ventana
+import sys
 
-from PySide6.QtCore import QTimer
 from PySide6.QtWidgets import QApplication
+from PySide6.QtCore import QTimer
+
+import config
+import utilidades
+
+from ventana import VentanaAlarma
 
 
+app = QApplication(sys.argv)
+ventana = VentanaAlarma()
 timer = QTimer()
 
 
 def actualizar_contador():
-  horas, minutos, segundos = utilidades.convertir_tiempo(utilidades.restante)
-  print(f"Tiempo restante: {horas:02}:{minutos:02}:{segundos:02}")
-  utilidades.restante -= 1
-  if utilidades.restante <= 0:
-    ventana.mostrar_ventana("Hora de descansar.")
+    horas, minutos, segundos = utilidades.convertir_tiempo(utilidades.restante)
+    print(f"Tiempo restante: {horas:02}:{minutos:02}:{segundos:02}")
+    utilidades.restante -= 1
+    if utilidades.restante < 0:
+        timer.stop()
+        ventana.mostrar("Hora de descansar")
+
+timer.timeout.connect(actualizar_contador)
+timer.start(1000)
+
+
+def reiniciar_contador():
     utilidades.restante = config.intervalo
+    timer.start(1000)
 
 
-def iniciar():
-  app = QApplication(sys.argv)
-  timer.timeout.connect(actualizar_contador)
-  timer.start(1000)
-  app.exec()
+ventana.continuar.connect(reiniciar_contador)
 
 
-iniciar()
+app.exec()
