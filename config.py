@@ -1,4 +1,3 @@
 #Modulo: config.py
 
-intervalo = 10
-
+intervalo = 10 #En segundos
