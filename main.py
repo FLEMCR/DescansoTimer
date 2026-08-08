@@ -2,27 +2,29 @@
 
 import sys
 
-from PySide6.QtWidgets import QApplication
 from PySide6.QtCore import QTimer
+from PySide6.QtWidgets import QApplication
 
 import config
 import utilidades
-
 from ventana import VentanaAlarma
-
 
 app = QApplication(sys.argv)
 ventana = VentanaAlarma()
+
+ventana.show()
+
 timer = QTimer()
 
 
 def actualizar_contador():
     horas, minutos, segundos = utilidades.convertir_tiempo(utilidades.restante)
-    print(f"Tiempo restante: {horas:02}:{minutos:02}:{segundos:02}")
+    ventana.actualizar_tiempo(horas, minutos, segundos)
     utilidades.restante -= 1
     if utilidades.restante < 0:
         timer.stop()
-        ventana.mostrar("Hora de descansar")
+        ventana.mostrar_final("Hora de descansar")
+
 
 timer.timeout.connect(actualizar_contador)
 timer.start(1000)
@@ -31,6 +33,10 @@ timer.start(1000)
 def reiniciar_contador():
     utilidades.restante = config.intervalo
     timer.start(1000)
+    ventana.tiempo_label.show()
+    ventana.boton.hide()
+    ventana.descripcion.setText("")
+    ventana.show()  # ← Para que la ventana vuelva a ser visible
 
 
 ventana.continuar.connect(reiniciar_contador)
