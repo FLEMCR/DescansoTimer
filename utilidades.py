@@ -2,7 +2,9 @@
 
 import config
 
-restante = config.intervalo
+restante = config.intervalo  # Una copia de la variable "intervalo" de config.py, que se puede modificar sin afectar el valor original.
+
+restante_descanso = config.intervalo_descanso
 
 
 def convertir_tiempo(segundos_totales):
