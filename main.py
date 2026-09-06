@@ -38,11 +38,15 @@ def alternar_color_parpadeo():
 timer_parpadeo.timeout.connect(alternar_color_parpadeo)
 
 
+def actualizar_tiempo(restante, tipo):
+    h, m, s = utilidades.convertir_tiempo(restante)
+    ventana.actualizar_tiempo(h, m, s)
+    ventana.actualizar_tooltip(h, m, s, tipo)
+
+
 def actualizar_contador():
     """Actualiza la cuenta regresiva principal."""
-    h, m, s = utilidades.convertir_tiempo(utilidades.restante)
-    ventana.actualizar_tiempo(h, m, s)
-    ventana.actualizar_tooltip(h, m, s, "normal")
+    actualizar_tiempo(utilidades.restante, "normal")
 
     utilidades.restante -= 1
 
@@ -66,9 +70,7 @@ def actualizar_contador():
 
 def actualizar_contador_descanso():
     """Actualiza la cuenta regresiva del descanso."""
-    h, m, s = utilidades.convertir_tiempo(utilidades.restante_descanso)
-    ventana.actualizar_tiempo(h, m, s)
-    ventana.actualizar_tooltip(h, m, s, "descanso")
+    actualizar_tiempo(utilidades.restante_descanso, "descanso")
 
     utilidades.restante_descanso -= 1
 

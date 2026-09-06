@@ -1,0 +1,5 @@
+{
+  "tiempo_uso": 3600,
+  "tiempo_descanso": 300,
+  "umbral_tiempo_final_previo_descanso": 300
+}

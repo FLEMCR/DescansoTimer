@@ -12,4 +12,4 @@ __pycache__/
 .vscode/
 
 # Archivo de testeo
-prueba.py
+pruebas/
