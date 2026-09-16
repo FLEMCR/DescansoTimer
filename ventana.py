@@ -6,6 +6,7 @@ from PySide6.QtWidgets import (
     QApplication,
     QLabel,
     QMenu,
+    QMessageBox,
     QPushButton,
     QSystemTrayIcon,
     QVBoxLayout,
@@ -71,7 +72,7 @@ class VentanaAlarma(QWidget):
 
         # Menú contextual (clic derecho sobre el icono)
         salir_action = QAction("Salir", self)
-        salir_action.triggered.connect(QApplication.quit)
+        salir_action.triggered.connect(self.proceso_de_cerrado)
 
         menu = QMenu()
         menu.addAction(salir_action)
@@ -141,3 +142,31 @@ class VentanaAlarma(QWidget):
 
     def cambiar_color_texto(self, color):
         self.tiempo_label.setStyleSheet(f"color: {color}; font-size: 48px;")
+
+    """Aquí coloco los metodos que se usan para identificar el cerrado de la ventana"""
+
+    def confirmar_salir(self):
+        respuesta = QMessageBox.question(
+            self,
+            "Cerrar",
+            "¿Seguro que quieres cerrar la aplicación?",
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+            QMessageBox.StandardButton.No,
+        )
+        # Los argumentos a usar aqui son titulo de ventana, texto de la ventana (pregunta), botones, boton marcado por defecto.
+        return respuesta == QMessageBox.StandardButton.Yes
+
+    def proceso_de_cerrado(self):
+        """Pregunta al usuario y, si acepta, cierra la app (True)."""
+        if self.confirmar_salir():
+            QApplication.quit()
+            return True
+        return False
+
+    def closeEvent(self, event):
+        # Este metodo es para que cuando se reconozca el cerrado desde la ventana use el metodo de confirmar_salir()
+        if self.proceso_de_cerrado():
+            # En la linea superior no es necesario colocar "if self.proceso_de_cerrado() == True:" porque se sobre entiende y esta aceptado escribirlo asi.
+            event.accept()
+        else:
+            event.ignore()
